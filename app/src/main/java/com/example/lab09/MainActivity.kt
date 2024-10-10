@@ -1,17 +1,18 @@
 package com.example.lab09
 
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Home
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,9 +21,6 @@ import androidx.navigation.navArgument
 import androidx.navigation.NavType
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Home
 import com.example.lab09.ui.theme.Lab09Theme
 
 class MainActivity : ComponentActivity() {
@@ -51,11 +49,13 @@ fun ProgPrincipal9() {
     Scaffold(
         topBar = { BarraSuperior() },
         bottomBar = { BarraInferior(navController) },
-        content = { paddingValues -> Contenido(paddingValues, navController, servicio) }
+        content = { paddingValues ->
+            Contenido(paddingValues, navController, servicio)
+        }
     )
 }
-@OptIn(ExperimentalMaterial3Api::class)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BarraSuperior() {
     CenterAlignedTopAppBar(
@@ -74,9 +74,7 @@ fun BarraSuperior() {
 
 @Composable
 fun BarraInferior(navController: NavHostController) {
-    NavigationBar(
-        containerColor = Color.LightGray
-    ) {
+    NavigationBar(containerColor = Color.LightGray) {
         NavigationBarItem(
             icon = { Icon(Icons.Outlined.Home, contentDescription = "Inicio") },
             label = { Text("Inicio") },
@@ -109,7 +107,8 @@ fun Contenido(
             "postsVer/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
-            ScreenPost(navController, servicio, backStackEntry.arguments?.getInt("id") ?: 0)
+            val postId = backStackEntry.arguments?.getInt("id") ?: 0
+            ScreenPost(navController, servicio, postId)
         }
     }
 }
@@ -117,16 +116,6 @@ fun Contenido(
 @Composable
 fun ScreenInicio() {
     Text("INICIO")
-}
-
-@Composable
-fun ScreenPosts(navController: NavHostController, servicio: PostApiService) {
-    // Implementación de la pantalla de posts
-}
-
-@Composable
-fun ScreenPost(navController: NavHostController, servicio: PostApiService, id: Int) {
-    // Implementación de la pantalla de detalles del post
 }
 
 @Preview(showBackground = true)
